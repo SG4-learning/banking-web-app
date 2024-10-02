@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fund Transfer - Digital Banking System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
+                <li><a href="transfers.html">Transfers</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form id="fundTransferForm">
+            <h2>Transfer Funds</h2>
+            <label for="recipientAccount">Recipient Account:</label>
+            <input type="text" id="recipientAccount" required>
+            <label for="transferAmount">Amount:</label>
+            <input type="number" id="transferAmount" required>
+            <button type="submit">Transfer</button>
+            <p id="transferMessage"></p>
+            <button id="backToDashboardFromTransfer">Back to Dashboard</button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('fundTransferForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const recipientAccount = document.getElementById('recipientAccount').value;
+            const amount = document.getElementById('transferAmount').value;
+            const jwt = localStorage.getItem('jwt');
+
+            const response = await fetch('http://localhost:8080/api/account/transfer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({ recipientAccount, amount })
+            });
+
+            const message = document.getElementById('transferMessage');
+            if (response.ok) {
+                message.style.color = 'green';
+                message.textContent = 'Transfer successful';
+            } else {
+                message.style.color = 'red';
+                message.textContent = 'Transfer failed';
+            }
+        });
+
+        document.getElementById('backToDashboardFromTransfer').addEventListener('click', function() {
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

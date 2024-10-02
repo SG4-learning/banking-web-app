@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - Digital Banking System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
+                <li><a href="transfers.html">Transfers</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Transaction History</h2>
+        <ul id="transactionList"></ul>
+        <button id="backToDashboardFromHistory">Back to Dashboard</button>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const jwt = localStorage.getItem('jwt');
+            const response = await fetch('http://localhost:8080/api/account/transactions', {
+                headers: {
+                    'Authorization': `Bearer ${jwt}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const transactionList = document.getElementById('transactionList');
+                transactionList.innerHTML = '';
+                data.transactions.forEach(transaction => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${transaction.date}: ${transaction.amount} to ${transaction.recipient}`;
+                    transactionList.appendChild(listItem);
+                });
+            }
+
+            document.getElementById('backToDashboardFromHistory').addEventListener('click', function() {
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+</html>

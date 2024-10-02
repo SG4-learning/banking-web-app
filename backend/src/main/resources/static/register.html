@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Digital Banking System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <form id="registrationForm">
+        <h2>Register</h2>
+        <label for="registerUsername">Username:</label>
+        <input type="text" id="registerUsername" required>
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" required>
+        <button type="submit">Register</button>
+        <p id="registrationMessage"></p>
+    </form>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            const response = await fetch('http://localhost:8080/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, password })
+            });
+
+            const message = document.getElementById('registrationMessage');
+            if (response.ok) {
+                message.style.color = 'green';
+                message.textContent = 'Registration successful';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                message.style.color = 'red';
+                message.textContent = 'Registration failed';
+            }
+        });
+    </script>
+</body>
+</html>

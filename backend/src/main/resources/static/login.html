@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Digital Banking System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <form id="loginForm">
+        <h2>Login</h2>
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" required>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" required>
+        <button type="submit">Login</button>
+        <p id="loginMessage"></p>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, password })
+            });
+
+            const message = document.getElementById('loginMessage');
+            if (response.ok) {
+                const data = await response.json();
+                message.style.color = 'green';
+                message.textContent = 'Login successful';
+                localStorage.setItem('jwt', data.jwt);
+                localStorage.setItem('username', name);
+                window.location.href = 'dashboard.html';
+            } else {
+                message.style.color = 'red';
+                message.textContent = 'Login failed';
+            }
+        });
+    </script>
+</body>
+</html>

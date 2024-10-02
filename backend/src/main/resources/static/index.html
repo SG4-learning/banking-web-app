@@ -1,12 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Banking Web Application</title>
-    <script src="js/app.js" defer></script>
-</head>
-<body>
-    <h1>Welcome to the Banking Web Application</h1>
-    <div id="user-list"></div>
-</body>
-</html>
+ <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Registration and Login</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+            .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 300px;
+            }
+            .container h2 {
+                margin-top: 0;
+            }
+            .container form {
+                display: flex;
+                flex-direction: column;
+            }
+            .container form input {
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            .container form button {
+                padding: 10px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .container form button:hover {
+                background-color: #0056b3;
+            }
+            .message {
+                margin-top: 10px;
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="name" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <button type="submit">Register</button>
+            </form>
+            <div class="message" id="registerMessage"></div>
+        </div>
+    
+        <div class="container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="name" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="message" id="loginMessage"></div>
+        </div>
+    
+        <script>
+            document.getElementById('registerForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const name = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+                const email = document.getElementById('registerEmail').value;
+    
+                const response = await fetch('http://localhost:8080/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, password, email })
+                });
+    
+                const message = document.getElementById('registerMessage');
+                if (response.ok) {
+                    message.style.color = 'green';
+                    message.textContent = 'User registered successfully';
+                } else {
+                    message.style.color = 'red';
+                    message.textContent = 'Registration failed';
+                }
+            });
+    
+            document.getElementById('loginForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const name = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+    
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, password })
+                });
+    
+                const message = document.getElementById('loginMessage');
+                if (response.ok) {
+                    const data = await response.json();
+                    message.style.color = 'green';
+                    message.textContent = 'Login successful';
+                    localStorage.setItem('jwt', data.jwt);
+                } else {
+                    message.style.color = 'red';
+                    message.textContent = 'Login failed';
+                }
+            });
+        </script>
+    </body>
+    </html>
