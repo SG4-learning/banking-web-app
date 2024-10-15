@@ -16,6 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @Configuration
@@ -55,15 +57,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         logger.info("Configuring HttpSecurity");
-        httpSecurity.csrf().disable()
+        httpSecurity
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/login.html", "/register.html", "/error", "/favicon.ico").permitAll() // Allow access to /error and /favicon.ico
+                .antMatchers("/login", "/logout","/register", "/error", "/favicon.ico").permitAll() // Allow access to /error and /favicon.ico
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/dashboard.html", "/account-details.html", "/fund-transfer.html", "/transaction-history.html", "/settings.html").permitAll() // Protect specific HTML files
+                .antMatchers("/dashboard","/account-details", "/new-account").permitAll()// Protect the account-details endpoint
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(customAccessDeniedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+     @Bean
+    public HttpFirewall allowSemicolonHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
+        return firewall;
     }
 }

@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 -- Insert initial data
 INSERT INTO user (name, email, phone, password) VALUES
-('John Doe', 'john.doe@example.com', '123-456-7890', '123 Elm Street'),
-('Jane Smith', 'jane.smith@example.com', '987-654-3210', '456 Oak Avenue');
+('John Doe', 'john.doe@example.com', '123-456-7890', '1234'),
+('Jane Smith', 'jane.smith@example.com', '987-654-3210', '4567');
 
 INSERT INTO account (user_id, account_number, account_type, balance) VALUES
 (1, '1234567890', 'Checking', 1000.00),

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Digital Banking System</title>
+    <link rel="stylesheet" th:href="@{/css/banking.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Login to Your Account</h1>
+        </header>
+        <form id="loginForm" th:action="@{/login}" method="post" th:object="${user}">
+            <h2>Login</h2>
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="password" th:field="*{password}" required>
+            <button type="submit">Login</button>
+            <p id="loginMessage"></p>
+            <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+            <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+            <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+        </form>
+    </div>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

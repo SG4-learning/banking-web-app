@@ -16,6 +16,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
+   
     @Autowired
     private UserRepository userRepository;
 
@@ -73,4 +74,10 @@ public class UserServiceImpl implements UserService {
         }
         return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), new ArrayList<>());
     }
+
+    @Override
+    public boolean userExists(String username) {
+        return userRepository.findByName(username) != null;
+    }
+
 }

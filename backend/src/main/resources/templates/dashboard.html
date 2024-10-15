@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Digital Banking System</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>Digital Banking System</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/profile}">Profile</a></li>
+                <li><a th:href="@{/settings}">Settings</a></li>
+                <li><a th:href="@{/logout}" class="logout-link">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Welcome, <span th:text="${user.name}">User</span></h2>
+            <a class="button" th:href="@{/new-account}">New Account Details</a>
+            <a class="button" th:href="@{/transfer-funds}">Transfer Funds</a>
+            <a class="button" th:href="@{/transaction-history}">View Transaction History</a>
+            <div th:if="${account != null}">
+                <a class="button" th:href="@{/account-details(accountId=${account.id})}">View Account Details</a>
+            </div>
+        </div>
+    </main>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

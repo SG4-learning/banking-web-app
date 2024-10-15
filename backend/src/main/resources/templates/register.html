@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Digital Banking System</title>
+    <link rel="stylesheet" th:href="@{/css/banking.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Create a New Account</h1>
+        </header>
+        <form id="registrationForm" th:action="@{/register}" method="post" th:object="${user}">
+            <h2>Register</h2>
+            <label for="registerUsername">Username:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" th:field="*{password}" required>
+            <button type="submit">Register</button>
+            <p id="registrationMessage"></p>
+        </form>
+    </div>
+    <script th:src="@{/js/scripts.js}"></script>
+    </script>
+</body>
+</html>

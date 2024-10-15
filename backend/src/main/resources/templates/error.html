@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Digital Banking System</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Error</h1>
+        </header>
+        <main>
+            <p>Sorry, an error occurred while processing your request.</p>
+            <p th:text="${message}"></p>
+            <button th:onclick="|window.location.href='@{/}'|">Go to Home</button>
+        </main>
+    </div>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

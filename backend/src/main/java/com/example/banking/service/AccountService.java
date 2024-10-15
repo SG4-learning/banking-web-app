@@ -1,40 +1,56 @@
 package com.example.banking.service;
 
+import com.example.banking.controller.AccountController;
 import com.example.banking.model.Account;
+import com.example.banking.model.User;
 import com.example.banking.repository.AccountRepository;
+import com.example.banking.repository.UserRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AccountService {
 
-    private final AccountRepository accountRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public Account getAccountDetails(String username) {
+        User user = userRepository.findByName(username);
+        if (user != null) {
+            return accountRepository.findByUserId(user.getId());
+        }
+        return null;
     }
 
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public void createAccount(Account account, User user) {
+        account.setUser(user);
+        accountRepository.save(account);
     }
 
-    public Account getAccountById(Long id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    public void createAccount(Account account) {
+        logger.info("Creating a new account: " + account);
+        User user = userRepository.findByName(account.getUser().getName());
+        logger.info("User name: {}",user.getName());
+        logger.info("User id: {}",user.getId());
+        if (user != null && user.getId() == null) {
+            user = userRepository.save(user); // Ensure the user is persisted
+        }
+        account.setUser(user);
+        
+        logger.info("Account: {}",account.toString());
+        accountRepository.save(account);
     }
 
-    public Account createAccount(Account account) {
-        return accountRepository.save(account);
-    }
-
-    public Account updateAccount(Account account) {
-        return accountRepository.save(account);
-    }
-
-    public void deleteAccount(Long id) {
-        accountRepository.deleteById(id);
+    public Account findById(Long id) {
+        logger.info("Finding account by id: " + id);
+        return accountRepository.findById(id).orElse(null);
     }
 }

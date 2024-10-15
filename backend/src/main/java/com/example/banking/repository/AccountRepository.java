@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    // Add custom methods for account management if needed
+    Account findByUserId(Long userId);
+
 }

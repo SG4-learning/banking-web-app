@@ -14,4 +14,5 @@ public interface UserService extends UserDetailsService {
     User createUser(User user);
     User updateUser(Long id, User userDetails);
     User getUserByName(String name);
+    boolean userExists(String name);
 }

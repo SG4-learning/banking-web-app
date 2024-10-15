@@ -1,35 +1,46 @@
 package com.example.banking.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "account")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
-    private double balance;
-    private int userId;
 
-    public Account() {
+    @Column(name = "account_type", nullable = false)
+    private String accountType;
+
+    @Column(name = "balance", nullable = false)
+    private Double balance;
+
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
     }
 
-    public Account(int accountId, String accountNumber, double balance, int userId) {
-        this.accountId = accountId;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAccountNumber() {
@@ -40,19 +51,32 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public double getBalance() {
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public int getUserId() {
-        return userId;
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", user=" + (user != null ? user.getId() : "null") +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+
 }
