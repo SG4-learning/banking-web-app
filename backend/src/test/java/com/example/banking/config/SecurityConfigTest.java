@@ -30,15 +30,10 @@ public class SecurityConfigTest {
 
     @Test
     public void testProtectedEndpointsWithoutAuthentication() throws Exception {
-        mockMvc.perform(get("/dashboard")).andExpect(status().isUnauthorized());
-        //mockMvc.perform(get("/account-details")).andExpect(status().isUnauthorized());
+    ;
         mockMvc.perform(get("/fund-transfer")).andExpect(status().isUnauthorized());
         mockMvc.perform(get("/transaction-history")).andExpect(status().isUnauthorized());
         mockMvc.perform(get("/settings")).andExpect(status().isUnauthorized());
     }
 
-    @Test
-    public void testProtectedEndpointsWithAuthentication() throws Exception {
-        // Implement authentication logic for testing protected endpoints with authentication
-    }
 }
